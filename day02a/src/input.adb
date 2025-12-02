@@ -38,12 +38,14 @@ is
 
    procedure Check_Values (
       Lwb : Long_Natural; Lwb_Size : Nr_Digits;
-      Upb : Long_Natural; Upb_Size : Nr_Digits
+      Upb : Long_Natural; Upb_Size : Nr_Digits;
+      Bad_Id_Sum : in out Long_Natural
    ) is
       --  find odd powers of 10 between Lwb and Upb
       Low_Pow_10 : constant Half_Nr_Digits := Half_Nr_Digits (Integer (Lwb_Size + 1) / 2);
-      High_Pow_10 : constant Half_Nr_Digits := Half_Nr_Digits (Integer (Upb_Size / 2));
+      High_Pow_10 : constant Half_Nr_Digits := Half_Nr_Digits (Integer (Upb_Size + 1) / 2);
       Base_10, Lowest, Highest : Natural;
+      Bad_Id : Long_Natural;
    begin
       Put (Nr_Digits'Image (Low_Pow_10));
       Put ('-');
@@ -56,25 +58,34 @@ is
          Base_10 := 10 ** Natural (Pow_10);
          Lowest := Natural ((Long_Integer (Lwb) + Long_Integer (Base_10 + 1) - 1) / Long_Integer (Base_10 + 1));
          Highest := Natural (Long_Integer (Upb) / Long_Integer (Base_10 + 1));
+         Put (Natural'Image (Lowest));
+         Put ('-');
+         Put (Natural'Image (Highest));
+         Put_Line ("");
          for I in Lowest .. Highest loop
-            Put (Long_Integer'Image (Long_Integer (I) * Long_Integer (Base_10 + 1)));
+            Bad_Id := Long_Natural (I) * Long_Natural (Base_10 + 1);
+            Bad_Id_Sum := Bad_Id_Sum + Bad_Id;
+            Put (Long_Natural'Image (Bad_Id));
             Put_Line ("");
          end loop;
       end loop;
+      Put_Line ("");
    end Check_Values;
 
-   procedure End_Span with
+   procedure End_Span (Bad_Id_Sum : in out Long_Natural) with
       Global => (
-         In_Out => (Span, Span_Size, Ada.Text_IO.File_System),
-         Output => (Span_Pos)),
+         In_Out => (Span, Span_Size, Span_Pos, Ada.Text_IO.File_System)),
       Exceptional_Cases => (Value_Empty => True)
    is
    begin
+      if Span_Pos = 0 then
+         return; 
+      end if;
       Span_Pos := 0;
       if Span_Size (0) = 0 or else Span_Size (1) = 0 then
          raise Value_Empty;
       end if;
-      Check_Values (Span (0), Span_Size (0), Span (1), Span_Size (1));
+      Check_Values (Span (0), Span_Size (0), Span (1), Span_Size (1), Bad_Id_Sum);
       Span := (0, 0);
       Span_Size := (0, 0);
    end End_Span;
@@ -86,16 +97,19 @@ is
 
    procedure Parse_Stdin is
       Ch : Character;
+      Bad_Id_Sum : Long_Natural := 0;
    begin
       while not End_Of_File loop
          Get (Ch);
          case Ch is
-            when ',' => End_Span;
+            when ',' => End_Span (Bad_Id_Sum);
             when '-' => Switch_Value;
             when others => Add_To_Value (Ch);
          end case;
       end loop;
-      End_Span;
+      End_Span (Bad_Id_Sum);
+      Put (Long_Natural'Image (Bad_Id_Sum));
+      Put_Line ("");
    exception
       when others =>
          Put_Line ("Input Error");

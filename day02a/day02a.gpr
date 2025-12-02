@@ -1,5 +1,5 @@
 with "config/day02a_config.gpr";
-with "sparklib_light";
+--  with "sparklib_light";
 
 project Day02a is
 
