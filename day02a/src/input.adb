@@ -26,7 +26,7 @@ is
 
    procedure Add_To_Value (Ch : Character) with
       Global => (
-         In_Out => (Span, Span_Size, Ada.Text_IO.File_System),
+         In_Out => (Span, Span_Size),
          Input => (Span_Pos)),
       Exceptional_Cases => (Too_Long => True)
    is
@@ -47,6 +47,7 @@ is
       Upb : Big_Natural; Upb_Size : Positive_Nr_Digits;
       Bad_Id_Sum : in out Big_Natural
    ) with
+      Pre => (Upb >= Lwb),
       Exceptional_Cases => (Overflow => True)
    is
       --  find odd powers of 10 between Lwb and Upb
@@ -68,6 +69,7 @@ is
                   Min (Upb / ((Base_10) + 1), Base_10 - 1)
                else
                   Base_10 - 1);
+            pragma Assume (Highest >= Lowest);
             Sum_From_Lowest_To_Highest : constant Big_Natural :=
                (Lowest + Highest) * (Highest - Lowest + 1) / 2; 
          begin
@@ -81,14 +83,16 @@ is
       Global => (
          In_Out => (Span, Span_Size, Span_Pos)),
       Exceptional_Cases => (Value_Empty => True, Overflow => True)
-   is
-   begin
+   is begin
       if Span_Pos = 0 then
          return;
       end if;
       Span_Pos := 0;
       if Span_Size (0) = 0 or else Span_Size (1) = 0 then
          raise Value_Empty;
+      end if;
+      if Span (0) > Span (1) then
+         return; --  empty range
       end if;
       Check_Values (Span (0), Span_Size (0), Span (1), Span_Size (1),
                     Bad_Id_Sum);
