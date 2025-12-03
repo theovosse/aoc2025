@@ -9,6 +9,5 @@ is
 begin
    Parse_Stdin;
 exception
-    when others =>
-        Put_Line ("Input Error");
+   when others => Put_Line ("Input Error");
 end Day02a;
