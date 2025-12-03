@@ -36,8 +36,6 @@ is
       if Digit < 0 or else Digit > 9 or else
          Span_Size (Span_Pos) = Nr_Digits'Last
       then
-         Put_Line ("Digit =" & Character'Image (Ch) &
-                   ", Span_Size =" & Nr_Digits'Image (Span_Size (Span_Pos)));
          raise Too_Long with "value too long";
       end if;
       Span (Span_Pos) := Value * 10 + To_Big_Integer (Digit);
@@ -57,10 +55,6 @@ is
       High_Pow_10 : constant Half_Nr_Digits :=
          Half_Nr_Digits (Integer (Upb_Size) / 2);
    begin
-    --    Put_Line ("Range =" & Big_Natural'Image (Lwb) & "-" &
-    --              Big_Natural'Image (Upb));
-    --    Put_Line ("Low_Pow_10 =" & Integer'Image (Low_Pow_10) &
-    --              ", High_Pow_10 =" & Integer'Image (High_Pow_10));
       for Pow_10 in Low_Pow_10 .. High_Pow_10 loop
          declare
             Base_10 : constant Big_Natural := Powers_Of_10 (Pow_10);
@@ -74,28 +68,13 @@ is
                   Min (Upb / ((Base_10) + 1), Base_10 - 1)
                else
                   Base_10 - 1);
+            Sum_From_Lowest_To_Highest : constant Big_Natural :=
+               (Lowest + Highest) * (Highest - Lowest + 1) / 2; 
          begin
-            --   Put_Line ("Pow_10 =" & Half_Nr_Digits'Image (Pow_10) &
-            --             ", Base_10 =" & Big_Natural'Image (Base_10) &
-            --             ", Lowest =" & Big_Natural'Image (Lowest) &
-            --             ", Highest =" & Big_Natural'Image (Highest));
-            declare
-               I : Big_Natural := Lowest;
-            begin
-               while I <= Highest loop
-                  declare
-                     Bad_Id : Big_Natural :=
-                        I * Big_Natural (Base_10 + 1);
-                  begin
-                     Bad_Id_Sum := Bad_Id_Sum + Bad_Id;
-                     --  Put_Line ("Bad_Id =" & Big_Natural'Image (Bad_Id));
-                     I := I + 1;
-                  end;
-               end loop;
-            end;
+            Bad_Id_Sum := Bad_Id_Sum +
+               Sum_From_Lowest_To_Highest * (Base_10 + 1);
          end;
       end loop;
-    --    Put_Line ("");
    end Check_Values;
 
    procedure End_Span (Bad_Id_Sum : in out Big_Natural) with
@@ -135,8 +114,7 @@ is
          end case;
       end loop;
       End_Span (Bad_Id_Sum);
-      Put (To_String (Bad_Id_Sum));
-      Put_Line ("");
+      Put_Line (To_String (Bad_Id_Sum));
    exception
       when Too_Long =>
          Put_Line ("Too long");
