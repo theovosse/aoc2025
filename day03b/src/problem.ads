@@ -4,7 +4,9 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 
-package Problem is
+package Problem with
+   SPARK_Mode => On
+is
 
    Input_Error : exception;
 
@@ -12,15 +14,17 @@ package Problem is
 
    function Power (Base : Big_Integer; Power : Natural) return Big_Integer;
 
-   function Find_Max_Joltage (
+   procedure Find_Max_Joltage (
       Line : Unbounded_String;
       First_Pos, Last_Pos : Positive;
       Nr_Digits : Nr_Digits_Type;
-      Pow_10 : Big_Integer) return Big_Integer
+      Pow_10 : Big_Integer;
+      Max_Joltage : out Big_Integer)
    with
       Pre => (
          Last_Pos <= Length (Line) and then
-         First_Pos + Positive (Nr_Digits) - 1 <= Last_Pos
-      );
+         Long_Integer (First_Pos) + Long_Integer (Nr_Digits) - 1 <= Long_Integer (Last_Pos)
+      ),
+      Exceptional_Cases => (Input_Error => True);
 
 end Problem;

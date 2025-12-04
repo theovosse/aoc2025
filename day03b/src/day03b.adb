@@ -22,9 +22,11 @@ begin
       if Length (Line) < 12 then
          raise Input_Error with "Short Line";
       end if;
-      Max_Joltage := Find_Max_Joltage (
+      pragma assert (Integer (Nr_Digits_Type'Last) <= Length (Line));
+      Find_Max_Joltage (
          Line, 1, Length (Line), Nr_Digits_Type'Last,
-         Power (10, Natural (Nr_Digits_Type'Last - 1)));
+         Power (10, Natural (Nr_Digits_Type'Last - 1)),
+         Max_Joltage);
       Sum := Sum + Max_Joltage;
    end loop;
    Put_Line (To_String (Sum));

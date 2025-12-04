@@ -1,6 +1,8 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-package Input is
+package Input
+   with SPARK_Mode => On
+is
 
    procedure Read_Line (
       Line : out Unbounded_String;

@@ -1,6 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-package body Input is
+package body Input
+   with SPARK_Mode => Off
+is
 
    procedure Read_Line (
       Line : out Unbounded_String;
