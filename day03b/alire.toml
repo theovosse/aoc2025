@@ -1,0 +1,15 @@
+name = "day03b"
+description = "AoC, day 3, problem N"
+version = "0.1.0-dev"
+
+authors = ["tgv"]
+maintainers = ["tgv <email@email.email>"]
+maintainers-logins = ["xxx"]
+licenses = "custom-NON-AI-APACHE2"
+website = ""
+tags = []
+
+executables = ["day03b"]
+
+[[depends-on]]
+gnatprove = "^15.1.0"
