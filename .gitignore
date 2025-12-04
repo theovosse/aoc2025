@@ -3,3 +3,5 @@
 */alire/
 */input.*
 */.env
+*/.vscode/settings.json
+*/test*
