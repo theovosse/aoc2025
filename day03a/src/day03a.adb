@@ -2,7 +2,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Input; use Input;
 with Problem; use Problem;
-with Ada.Exceptions;
 
 procedure Day03a with
    SPARK_Mode => On
@@ -15,7 +14,7 @@ begin
    loop
       Read_Line (Line, EOF);
       exit when EOF;
-      Max_Joltage := Find_Max_Joltage (Line);
+      Find_Max_Joltage (Line, Max_Joltage);
       if Sum > Natural'Last - 99 then
          raise Input_Error;
       end if;
@@ -23,5 +22,5 @@ begin
    end loop;
    Put_Line (Natural'Image (Sum));
 exception
-    when others => Put_Line ("input error");
+   when others => Put_Line ("input error");
 end Day03a;
