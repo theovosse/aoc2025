@@ -1,0 +1,12 @@
+name = "day05a"
+description = "AoC, day 5, problem A"
+version = "0.1.0-dev"
+
+authors = ["tgv"]
+maintainers = ["tgv <email@email.email>"]
+maintainers-logins = ["xxx"]
+licenses = "custom-NON-AI-APACHE2"
+website = ""
+tags = []
+
+executables = ["day05a"]
