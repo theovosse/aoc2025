@@ -1,4 +1,3 @@
-with Ada.Text_IO; use Ada.Text_IO;
 with Maze; use Maze;
 
 package body Problem with
@@ -19,7 +18,7 @@ is
             for J in (if J0 = 1 then 1 else J0 - 1) ..
                      (if J0 >= Width then Width else J0 + 1)
             loop
-            pragma Assert (1 <= J and then J <= Width);
+               pragma Assert (1 <= J and then J <= Width);
                if (I /= I0 or else J /= J0) and then Matrix (I, J) = '@' then
                   pragma Assume (Touch_Count <= 8);
                   Touch_Count := Touch_Count + 1;

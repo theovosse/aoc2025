@@ -2,7 +2,6 @@ pragma Ada_2022;
 
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Exceptions;
 with IO; use IO;
 with Problem; use Problem;
 with Maze; use Maze;
