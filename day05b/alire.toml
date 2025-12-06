@@ -1,15 +1,15 @@
-name = "day05a"
-description = "AoC, day 5, problem A"
+name = "day05b"
+description = "AoC day 5 problem B"
 version = "0.1.0-dev"
 
-authors = ["tgv"]
-maintainers = ["tgv <email@email.email>"]
+authors = ["TGV"]
+maintainers = ["TGV <email@email.email>"]
 maintainers-logins = ["xxx"]
 licenses = "custom-NON-AI-APACHE2"
 website = ""
 tags = []
 
-executables = ["day05a"]
+executables = ["day05b"]
 
 [[depends-on]]
 gnatprove = "^15.1.0"
